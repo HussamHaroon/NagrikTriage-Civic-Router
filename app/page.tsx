@@ -13,6 +13,7 @@ import {
 } from "@radix-ui/react-icons";
 
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
+import Logo from "@/components/Logo";
 
 const FEATURES = [
   {
@@ -76,30 +77,30 @@ const ROLES = [
   {
     id: "citizen",
     title: "Citizen",
-    icon: "🧑",
+    image: "/citizen.png",
+    scale: 2,
     blurb:
       "File a complaint in your native language — text, voice, or photo. Get a routed, formal ticket in 3 seconds.",
-    color: "from-orange-400 to-amber-500",
     accent: "bg-orange-50 border-orange-200 text-orange-900",
     redirect: "/citizen",
   },
   {
     id: "officer",
     title: "Nodal Officer",
-    icon: "🧑‍💼",
+    image: "/officer.png",
+    scale: 1,
     blurb:
       "See only the tickets routed to your department, AI-summarized and sorted by urgency. No sorting, no translation, no triage.",
-    color: "from-blue-400 to-indigo-500",
     accent: "bg-blue-50 border-blue-200 text-blue-900",
     redirect: "/officer",
   },
   {
     id: "mayor",
     title: "City Administrator",
-    icon: "🏛️",
+    image: "/administrator.png",
+    scale: 2,
     blurb:
       "Watch the city in real time. Heatmap, category spikes, ward-by-ward trends, and AI-flagged emergencies.",
-    color: "from-emerald-400 to-green-600",
     accent: "bg-emerald-50 border-emerald-200 text-emerald-900",
     redirect: "/mayor",
   },
@@ -128,12 +129,7 @@ export default function LandingPage() {
       {/* Top bar */}
       <header className="px-5 sm:px-8 py-4 flex items-center justify-between max-w-6xl mx-auto">
         <div className="flex items-center gap-3">
-          <div
-            aria-hidden
-            className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 via-white to-green-600 border border-slate-200 shadow-sm flex items-center justify-center text-sm font-bold text-slate-900"
-          >
-            NT
-          </div>
+          <Logo size={36} />
           <div className="leading-tight">
             <div className="font-semibold text-slate-900">NagrikTriage</div>
             <div className="text-xs text-slate-600">Smart Bharat Civic Companion</div>
@@ -183,30 +179,40 @@ export default function LandingPage() {
       </section>
 
       {/* 3 personas */}
-      <section className="max-w-6xl mx-auto px-5 sm:px-8 mt-14">
+      <section className="max-w-6xl mx-auto px-5 sm:px-8 mt-20">
         <div className="text-center text-xs font-semibold uppercase tracking-wider text-slate-500">
           Pick your role to continue
         </div>
-        <div className="mt-4 grid sm:grid-cols-3 gap-4">
+        <div className="mt-10 grid sm:grid-cols-3 gap-6">
           {ROLES.map((r) => (
-            <button
+            <div
               key={r.id}
-              type="button"
-              onClick={() => pickRole(r.id as "citizen" | "officer" | "mayor", r.redirect)}
-              disabled={busyId !== null}
-              className={`group text-left p-5 rounded-2xl border ${r.accent} hover:shadow-lg transition disabled:opacity-60`}
+              className="clay-card group"
+              style={{ ["--scale" as string]: r.scale }}
             >
-              <div
-                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${r.color} flex items-center justify-center text-2xl shadow-md`}
+              {/* Clay figure — sits behind the card so only the upper half shows above the box */}
+              <img
+                src={r.image}
+                alt=""
+                aria-hidden
+                className="clay-figure"
+              />
+              {/* The box */}
+              <button
+                type="button"
+                onClick={() => pickRole(r.id as "citizen" | "officer" | "mayor", r.redirect)}
+                disabled={busyId !== null}
+                className={`clay-card-btn ${r.accent}`}
               >
-                {r.icon}
-              </div>
-              <div className="mt-3 text-lg font-bold">{r.title}</div>
-              <p className="mt-1 text-sm leading-relaxed opacity-90">{r.blurb}</p>
-              <div className="mt-3 inline-flex items-center text-sm font-medium group-hover:translate-x-1 transition-transform">
-                {busyId === r.id ? "Opening…" : "Continue →"}
-              </div>
-            </button>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="text-lg font-bold">{r.title}</div>
+                  <span className="inline-flex items-center text-sm font-medium group-hover:translate-x-1 transition-transform">
+                    {busyId === r.id ? "Opening…" : "Continue →"}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm leading-relaxed opacity-90 text-left">{r.blurb}</p>
+              </button>
+            </div>
           ))}
         </div>
       </section>

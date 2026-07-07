@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useHistory, type HistoryEntry } from "@/lib/history";
 import { CITIES, type CityRecord } from "@/lib/cities";
 import type { IncidentKind } from "@/lib/prompts";
+import Logo from "@/components/Logo";
 
 // Deterministic seed → jittered lat/lng near city center, so the map looks
 // populated without us storing real coordinates.
@@ -163,12 +164,7 @@ export default function DashboardPage() {
     <main className="min-h-screen">
       <header className="px-5 sm:px-8 py-4 max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div
-            aria-hidden
-            className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 via-white to-green-600 border border-slate-200 shadow-sm flex items-center justify-center text-sm font-bold text-slate-900"
-          >
-            NT
-          </div>
+          <Logo size={36} />
           <div className="leading-tight">
             <div className="font-semibold text-slate-900">Officer dashboard</div>
             <div className="text-xs text-slate-600">

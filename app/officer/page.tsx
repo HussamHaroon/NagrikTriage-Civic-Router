@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { CITIES, type CityRecord } from "@/lib/cities";
 import { speak } from "@/lib/useSpeech";
+import UserChip from "@/components/UserChip";
+import Logo from "@/components/Logo";
 
 type DbTicket = {
   id: string;
@@ -136,7 +138,7 @@ export default function OfficerPage() {
       <header className="px-5 sm:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto gap-3">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-3">
-            <div aria-hidden className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 via-white to-indigo-600 border border-slate-200 shadow-sm flex items-center justify-center text-sm font-bold text-slate-900">NT</div>
+            <Logo size={36} />
             <div className="leading-tight">
               <div className="font-semibold text-slate-900">Officer inbox</div>
               <div className="text-xs text-slate-600">AI-routed complaints · {dept} · {city?.name}</div>
@@ -148,6 +150,7 @@ export default function OfficerPage() {
           <Link href="/citizen" className="text-sm px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white border border-slate-200 text-slate-700 shadow-sm transition">Citizen view</Link>
           <Link href="/mayor" className="text-sm px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white border border-slate-200 text-slate-700 shadow-sm transition">Mayor view</Link>
           <button type="button" onClick={fetchTickets} className="text-sm px-3 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">↻ Refresh</button>
+          <UserChip />
         </div>
       </header>
 

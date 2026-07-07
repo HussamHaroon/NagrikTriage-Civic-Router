@@ -3,9 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 type Role = "citizen" | "officer" | "mayor";
 
+// Each demo persona has a real account seeded in Supabase (see
+// scripts/seed-judges.ts). Picking a role just pre-fills the form so judges
+// don't have to type credentials — but real users can also type their own.
 const ROLE_OPTIONS: {
   id: Role;
   title: string;
@@ -21,8 +25,8 @@ const ROLE_OPTIONS: {
     title: "Citizen",
     icon: "🧑",
     subtitle: "Report an issue, get a ticket.",
-    email: "priya@delhi.in",
-    password: "•••••••••",
+    email: "judge.citizen@nagriktriage.in",
+    password: "JudgeDemo2026!",
     redirect: "/citizen",
     bg: "from-orange-500 to-amber-500",
   },
@@ -31,8 +35,8 @@ const ROLE_OPTIONS: {
     title: "Nodal Officer",
     icon: "🧑‍💼",
     subtitle: "Department inbox, AI-sorted.",
-    email: "officer.jalboard@delhi.gov.in",
-    password: "••••••••••",
+    email: "judge.officer@nagriktriage.in",
+    password: "JudgeDemo2026!",
     redirect: "/officer",
     bg: "from-blue-500 to-indigo-600",
   },
@@ -41,8 +45,8 @@ const ROLE_OPTIONS: {
     title: "City Administrator",
     icon: "🏛️",
     subtitle: "City heatmap, ward spikes, KPIs.",
-    email: "mayor@mcd.gov.in",
-    password: "••••••••••",
+    email: "judge.mayor@nagriktriage.in",
+    password: "JudgeDemo2026!",
     redirect: "/mayor",
     bg: "from-emerald-500 to-green-600",
   },
@@ -51,12 +55,14 @@ const ROLE_OPTIONS: {
 export default function SignInPage() {
   const router = useRouter();
   const [selected, setSelected] = useState<Role>("citizen");
-  const [email, setEmail] = useState("priya@delhi.in");
-  const [password, setPassword] = useState("•••••••••");
+  const [email, setEmail] = useState(ROLE_OPTIONS[0].email);
+  const [password, setPassword] = useState(ROLE_OPTIONS[0].password);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const selectRole = (id: Role) => {
     setSelected(id);
+    setError(null);
     const opt = ROLE_OPTIONS.find((r) => r.id === id);
     if (opt) {
       setEmail(opt.email);
@@ -64,20 +70,45 @@ export default function SignInPage() {
     }
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const signIn = async (override?: { email?: string; password?: string; redirect?: string }) => {
     setBusy(true);
+    setError(null);
     const opt = ROLE_OPTIONS.find((r) => r.id === selected)!;
+    const creds = {
+      email: override?.email ?? email,
+      password: override?.password ?? password,
+    };
     try {
-      await fetch("/api/role", {
+      const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ role: selected }),
+        body: JSON.stringify(creds),
       });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data?.error ?? "Sign in failed.");
+        return;
+      }
+      const redirect = override?.redirect ?? data.redirect ?? opt.redirect;
+      router.push(redirect);
+      router.refresh();
     } catch {
-      // best-effort
+      setError("Network error — please try again.");
+    } finally {
+      setBusy(false);
     }
-    router.push(opt.redirect);
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    signIn();
+  };
+
+  // One-click "judge" entry — logs in as the citizen judge persona and
+  // lands on the citizen dashboard. (The selectRole UI above still lets
+  // a judge land on officer/mayor if they want.)
+  const signInAsJudge = () => {
+    signIn({ redirect: "/citizen" });
   };
 
   return (
@@ -86,9 +117,7 @@ export default function SignInPage() {
         {/* Brand panel */}
         <section className="hidden lg:block">
           <Link href="/" className="inline-flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 via-white to-green-600 border border-slate-200 shadow-sm flex items-center justify-center text-sm font-bold text-slate-900">
-              NT
-            </div>
+            <Logo size={40} />
             <div className="leading-tight">
               <div className="font-semibold text-slate-900">NagrikTriage</div>
               <div className="text-xs text-slate-600">Smart Bharat Civic Companion</div>
@@ -101,9 +130,9 @@ export default function SignInPage() {
             </span>
           </h1>
           <p className="mt-3 text-slate-700">
-            The same AI triage pipeline, but the experience adapts to who you are:
-            a citizen with a complaint, a government officer with an inbox, or a
-            mayor with a city to watch.
+            Sign in with your own account, or jump straight in as a hackathon
+            judge. Each role gets its own dashboard, its own data, and its own
+            view of the city.
           </p>
           <div className="mt-6 grid gap-3">
             {ROLE_OPTIONS.map((r) => (
@@ -159,6 +188,7 @@ export default function SignInPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
                 required
+                autoComplete="email"
               />
             </div>
             <div>
@@ -169,11 +199,19 @@ export default function SignInPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
                 required
+                autoComplete="current-password"
               />
               <p className="mt-1 text-[11px] text-slate-500">
-                Demo mode — any input is accepted. Real auth would verify against Supabase.
+                Pick a role above to pre-fill judge credentials, or type your own.
               </p>
             </div>
+
+            {error && (
+              <div className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
+                {error}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={busy}
@@ -181,14 +219,35 @@ export default function SignInPage() {
             >
               {busy ? "Signing in…" : "Sign In"}
             </button>
-
-            <div className="text-center text-xs text-slate-500">
-              Or{" "}
-              <Link href="/" className="text-orange-600 hover:underline">
-                browse the landing page
-              </Link>
-            </div>
           </form>
+
+          {/* One-click judge entry */}
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={signInAsJudge}
+              disabled={busy}
+              className="w-full px-5 py-2.5 rounded-xl bg-slate-900 text-white font-medium border border-slate-900 hover:bg-slate-800 disabled:opacity-60 transition flex items-center justify-center gap-2"
+            >
+              <span>🏆</span>
+              {busy ? "Signing in…" : "Sign in as hackathon judge"}
+            </button>
+            <p className="mt-1 text-center text-[11px] text-slate-500">
+              Skips the form — logs you straight in as the citizen judge persona.
+            </p>
+          </div>
+
+          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <span>
+              New here?{" "}
+              <Link href="/signup" className="text-orange-600 hover:underline">
+                Create an account
+              </Link>
+            </span>
+            <Link href="/" className="text-slate-500 hover:underline">
+              ← Landing page
+            </Link>
+          </div>
         </section>
       </div>
     </main>

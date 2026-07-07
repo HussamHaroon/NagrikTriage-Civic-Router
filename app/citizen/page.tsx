@@ -9,6 +9,8 @@ import { LANGUAGES, t, type LangCode } from "@/lib/i18n";
 import { useSpeech, speak } from "@/lib/useSpeech";
 import { detectPii, hasPii, maskPii } from "@/lib/pii";
 import { toPng } from "html-to-image";
+import UserChip from "@/components/UserChip";
+import Logo from "@/components/Logo";
 
 const EXAMPLES: { label: string; language: LangCode; text: string }[] = [
   { label: "Broken Pipe (Hinglish)", language: "hi", text: "Bhai mera paani 3 din se nahi aa raha, gali mein pipe phata hua hai aur paani sadak pe beh raha hai. Kuch karo please, tanker bhi nahi aa raha." },
@@ -249,7 +251,7 @@ export default function CitizenPage() {
       <header className="px-5 sm:px-8 py-4 flex items-center justify-between max-w-6xl mx-auto gap-3">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-3">
-            <div aria-hidden className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 via-white to-green-600 border border-slate-200 shadow-sm flex items-center justify-center text-sm font-bold text-slate-900">NT</div>
+            <Logo size={36} />
             <div className="leading-tight">
               <div className="font-semibold text-slate-900">NagrikTriage</div>
               <div className="text-xs text-slate-600">{tr("tagline")}</div>
@@ -267,6 +269,7 @@ export default function CitizenPage() {
           <button type="button" onClick={() => setShowHistory((v) => !v)} className="text-sm px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white border border-slate-200 text-slate-700 shadow-sm transition">
             {showHistory ? tr("hideHistory") : `${tr("showHistory")} (${hydrated ? entries.length : 0})`}
           </button>
+          <UserChip />
         </div>
       </header>
 

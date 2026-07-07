@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { CITIES, type CityRecord } from "@/lib/cities";
+import UserChip from "@/components/UserChip";
+import Logo from "@/components/Logo";
 
 type DbTicket = {
   id: string;
@@ -168,7 +170,7 @@ export default function MayorPage() {
       <header className="px-5 sm:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto gap-3">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-3">
-            <div aria-hidden className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 via-white to-green-700 border border-slate-200 shadow-sm flex items-center justify-center text-sm font-bold text-slate-900">NT</div>
+            <Logo size={36} />
             <div className="leading-tight">
               <div className="font-semibold text-slate-900">City Administrator</div>
               <div className="text-xs text-slate-600">Analytics view · {city?.name}</div>
@@ -183,6 +185,7 @@ export default function MayorPage() {
           <Link href="/citizen" className="text-sm px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white border border-slate-200 text-slate-700 shadow-sm transition">Citizen view</Link>
           <Link href="/officer" className="text-sm px-3 py-1.5 rounded-lg bg-white/70 hover:bg-white border border-slate-200 text-slate-700 shadow-sm transition">Officer view</Link>
           <button type="button" onClick={fetchAll} className="text-sm px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition">↻ Refresh</button>
+          <UserChip />
         </div>
       </header>
 

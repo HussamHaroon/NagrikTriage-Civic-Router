@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { triageComplaint } from "@/lib/gemini";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { createSupabaseServer } from "@/lib/supabaseServer";
 
 export const runtime = "nodejs";
 
@@ -45,13 +46,26 @@ export async function POST(req: NextRequest) {
 
     const ticketId = makeTicketId(body.cityId);
 
-    // Persist to Supabase (server-side, service_role). We don't fail the API
-    // response if Supabase is misconfigured — the AI triage is still valid
-    // and the client will fall back to localStorage.
+    // Look up the logged-in user so we can stamp owner_id. Falls back to
+    // service_role insert (no owner) when the caller is anonymous — that
+    // keeps the no-auth demo path working.
+    let ownerId: string | null = null;
+    try {
+      const sbUser = await createSupabaseServer();
+      const {
+        data: { user },
+      } = await sbUser.auth.getUser();
+      ownerId = user?.id ?? null;
+    } catch {
+      // ignore — anonymous
+    }
+
+    // Persist to Supabase. We use the user-scoped client when authenticated
+    // (so RLS enforces the owner_id = auth.uid() rule), otherwise fall back
+    // to the service_role admin client for anonymous demo inserts.
     let saved = false;
     try {
-      const sb = getSupabaseAdmin();
-      const { error } = await sb.from("tickets").insert({
+      const insertPayload = {
         ticket_id: ticketId,
         city_id: body.cityId ?? null,
         city_hint: body.cityHint ?? null,
@@ -65,9 +79,22 @@ export async function POST(req: NextRequest) {
         signals: triage.signals ?? [],
         incident_kind: triage.incident_kind,
         confidence_score: triage.confidence_score,
-      });
-      if (error) {
-        console.warn("[triage] Supabase insert failed:", error.message);
+        owner_id: ownerId,
+      };
+
+      let insertError;
+      if (ownerId) {
+        // Authed path: respect RLS.
+        const sbUser = await createSupabaseServer();
+        ({ error: insertError } = await sbUser.from("tickets").insert(insertPayload));
+      } else {
+        // Anonymous demo path: bypass RLS with service_role.
+        const sb = getSupabaseAdmin();
+        ({ error: insertError } = await sb.from("tickets").insert(insertPayload));
+      }
+
+      if (insertError) {
+        console.warn("[triage] Supabase insert failed:", insertError.message);
       } else {
         saved = true;
       }

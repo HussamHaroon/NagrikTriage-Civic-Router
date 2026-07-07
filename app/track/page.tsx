@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useHistory, type HistoryEntry } from "@/lib/history";
+import Logo from "@/components/Logo";
 
 type Stage = {
   key: string;
@@ -62,12 +63,7 @@ export default function TrackPage() {
     <main className="min-h-screen">
       <header className="px-5 sm:px-8 py-4 max-w-5xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div
-            aria-hidden
-            className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 via-white to-green-600 border border-slate-200 shadow-sm flex items-center justify-center text-sm font-bold text-slate-900"
-          >
-            NT
-          </div>
+          <Logo size={36} />
           <div className="leading-tight">
             <div className="font-semibold text-slate-900">Track ticket</div>
             <div className="text-xs text-slate-600">Smart Bharat · Status timeline</div>
