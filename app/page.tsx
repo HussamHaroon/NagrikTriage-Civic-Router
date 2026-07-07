@@ -3,6 +3,74 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import {
+  GlobeIcon,
+  Pencil2Icon,
+  LightningBoltIcon,
+  LayersIcon,
+  LockClosedIcon,
+  RocketIcon,
+} from "@radix-ui/react-icons";
+
+import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
+
+const FEATURES = [
+  {
+    name: "Multilingual by default",
+    description:
+      "Voice, text, or photo — in 6 Indian languages and any English/Hinglish dialect.",
+    Icon: GlobeIcon,
+    href: "/citizen",
+    cta: "Try it",
+    className:
+      "lg:col-span-2 lg:row-span-1",
+  },
+  {
+    name: "Real municipal routing",
+    description:
+      "8 metros with real helplines, plus national defaults for every other city.",
+    Icon: Pencil2Icon,
+    href: "/officer",
+    cta: "See officer view",
+    className: "lg:col-span-1",
+  },
+  {
+    name: "AI explainability",
+    description:
+      "Every urgency score is backed by extracted signals you can audit.",
+    Icon: LightningBoltIcon,
+    href: "/mayor",
+    cta: "Audit it",
+    className: "lg:col-span-1",
+  },
+  {
+    name: "Two-sided platform",
+    description:
+      "Citizens file, officers sort by department, mayors see ward spikes.",
+    Icon: LayersIcon,
+    href: "/dashboard",
+    cta: "View dashboard",
+    className: "lg:col-span-1",
+  },
+  {
+    name: "Privacy by design",
+    description:
+      "PII auto-masking, opt-in geolocation, server-side persistence.",
+    Icon: LockClosedIcon,
+    href: "/citizen",
+    cta: "Learn more",
+    className: "lg:col-span-1",
+  },
+  {
+    name: "100% free-tier",
+    description:
+      "Gemini Flash, Leaflet + OSM, Web Speech API, html-to-image. No paid keys.",
+    Icon: RocketIcon,
+    href: "/signin",
+    cta: "Get started",
+    className: "lg:col-span-1",
+  },
+];
 
 const ROLES = [
   {
@@ -144,24 +212,25 @@ export default function LandingPage() {
       </section>
 
       {/* Feature grid */}
-      <section className="max-w-6xl mx-auto px-5 sm:px-8 mt-16 grid md:grid-cols-3 gap-4">
-        {[
-          { icon: "🌍", title: "Multilingual by default", body: "Voice, text, or photo — in 6 Indian languages and any English/Hinglish dialect." },
-          { icon: "🏛️", title: "Real municipal routing", body: "8 metros with real helplines, plus national defaults for every other city." },
-          { icon: "🚨", title: "AI explainability", body: "Every urgency score is backed by extracted signals you can audit." },
-          { icon: "🗺️", title: "Two-sided platform", body: "Citizens file, officers sort by department, mayors see ward spikes." },
-          { icon: "🛡️", title: "Privacy by design", body: "PII auto-masking, opt-in geolocation, server-side persistence." },
-          { icon: "🆓", title: "100% free-tier", body: "Gemini Flash, Leaflet + OSM, Web Speech API, html-to-image. No paid keys." },
-        ].map((f) => (
-          <div
-            key={f.title}
-            className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition"
-          >
-            <div className="text-2xl">{f.icon}</div>
-            <div className="mt-2 font-semibold text-slate-900">{f.title}</div>
-            <p className="mt-1 text-sm text-slate-600">{f.body}</p>
+      <section className="max-w-6xl mx-auto px-5 sm:px-8 mt-20">
+        <div className="mb-8 text-center">
+          <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            One platform · every stakeholder
           </div>
-        ))}
+          <h2 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
+            Built for a faster, fairer city
+          </h2>
+          <p className="mt-2 text-slate-600 max-w-2xl mx-auto">
+            Hover any card to see how NagrikTriage turns messy, multilingual
+            complaints into structured, actionable government tickets.
+          </p>
+        </div>
+
+        <BentoGrid className="lg:grid-rows-3">
+          {FEATURES.map((feature) => (
+            <BentoCard key={feature.name} {...feature} />
+          ))}
+        </BentoGrid>
       </section>
 
       <footer className="max-w-6xl mx-auto px-5 sm:px-8 mt-16 pb-10 text-center text-xs text-slate-500">
