@@ -182,26 +182,29 @@ export default function LandingPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-12">
           {ROLES.map((r) => (
-            <button
+            <div
               key={r.id}
-              type="button"
-              onClick={() => pickRole(r.id as "citizen" | "officer" | "mayor", r.redirect)}
-              disabled={busyId !== null}
-              className={`group flex flex-col items-center text-center p-6 bg-white/50 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition disabled:opacity-60 ${r.accent}`}
+              className={`group relative mt-16 pt-16 flex flex-col items-center text-center p-6 bg-white/50 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition ${r.accent}`}
             >
-              {/* 3D character — sits inside the card, popping out the top */}
+              {/* 3D character — anchored to the top center, out of flow so it
+                  can't push the text around. z-10 keeps it above the card. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={r.image}
                 alt={`${r.title} avatar`}
-                className="h-40 w-40 object-contain -mt-16 mb-4 drop-shadow-xl pointer-events-none select-none"
+                className="absolute -top-16 left-1/2 transform -translate-x-1/2 w-32 h-32 object-contain drop-shadow-xl z-10 pointer-events-none select-none"
               />
               <div className="text-lg font-bold">{r.title}</div>
               <p className="mt-2 text-sm leading-relaxed opacity-90">{r.blurb}</p>
-              <div className="mt-4 inline-flex items-center text-sm font-medium group-hover:translate-x-1 transition-transform">
+              <button
+                type="button"
+                onClick={() => pickRole(r.id as "citizen" | "officer" | "mayor", r.redirect)}
+                disabled={busyId !== null}
+                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-60 transition group-hover:translate-x-0.5"
+              >
                 {busyId === r.id ? "Opening…" : "Continue →"}
-              </div>
-            </button>
+              </button>
+            </div>
           ))}
         </div>
       </section>

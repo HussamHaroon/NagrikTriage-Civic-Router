@@ -15,7 +15,7 @@ NagrikTriage is a GenAI-powered, **two-sided civic triage and routing platform**
 ---
 
 ## 🔗 Demo & Repository Links
-*   **GitHub Repository:** [https://github.com/trueg/NagrikTriage](https://github.com/trueg/NagrikTriage)
+*   **GitHub Repository:** [https://github.com/HussamHaroon/NagrikTriage](https://github.com/HussamHaroon/NagrikTriage)
 *   **Live Deployed Application:** [https://nagrik-triage-civic-router.vercel.app/](https://nagrik-triage-civic-router.vercel.app/)
 
 > [!IMPORTANT]
