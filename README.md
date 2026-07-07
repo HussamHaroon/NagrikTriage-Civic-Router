@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../logo.png" alt="NagrikTriage Logo" width="120" />
+  <img src="public/logo.png" alt="NagrikTriage Logo" width="120" />
 </p>
 
 # 🇮🇳 NagrikTriage — Smart Bharat Civic Companion
@@ -15,7 +15,7 @@ NagrikTriage is a GenAI-powered, **two-sided civic triage and routing platform**
 ---
 
 ## 🔗 Demo & Repository Links
-*   **GitHub Repository:** [https://github.com/HussamHaroon/NagrikTriage](https://github.com/HussamHaroon/NagrikTriage)
+*   **GitHub Repository:** [https://github.com/HussamHaroon/NagrikTriage-Civic-Router](https://github.com/HussamHaroon/NagrikTriage-Civic-Router)
 *   **Live Deployed Application:** [https://nagrik-triage-civic-router.vercel.app/](https://nagrik-triage-civic-router.vercel.app/)
 
 > [!IMPORTANT]
@@ -34,7 +34,7 @@ Below is a direct map of how this project delivers on the seven official evaluat
 | Rubric Criterion | Evidence & Implementation in This Project |
 | :--- | :--- |
 | **1. Innovation** | Moves beyond passive FAQ chatbots to build an *active, two-sided triage agent*. Accepts chaotic, multilingual citizen rants and converts them into structured municipal tickets routed to target departments. |
-| **2. Code Quality** | Modular Next.js 14 App Router codebase with type safety. Handles failed AI outputs and empty inputs gracefully via runtime guards and parsing try-catch blocks. Strict separation of UI, API routes, prompts, and database logic. |
+| **2. Code Quality** | Modular Next.js 16 App Router codebase with type safety. Handles failed AI outputs and empty inputs gracefully via runtime guards and parsing try-catch blocks. Strict separation of UI, API routes, prompts, and database logic. |
 | **3. Problem Alignment** | Fully aligns with the *Smart Bharat - AI-Powered Civic Companion* prompt. Directly resolves issues with government accessibility, language barriers, response prioritization, and complaint tracking. |
 | **4. AI Usage** | Deep integration of Gemini 2.5 Flash. Uses a strict JSON schema via API-native `responseSchema` for structured outputs (translation -> classification -> urgency scoring -> signal extraction). Multimodal capabilities allow photo-only triage. |
 | **5. Usability** | UI localized in 6 languages. Features voice input (Web Speech API), one-click demo examples, one-tap copy/WhatsApp share buttons, automated client-side PII masking, and an emergency hotline banner for high-urgency reports. |
@@ -48,7 +48,7 @@ Below is a direct map of how this project delivers on the seven official evaluat
 NagrikTriage integrates the three pillars of municipal interaction into a single interface.
 
 ### 1. Citizen Experience (`/citizen`)
-![Citizen Experience](../Citizen.png)
+![Citizen Experience](public/citizen.png)
 
 *   🗣️ **Multilingual Voice & Text Input:** Citizens can type or use browser-native speech-to-text (Web Speech API) in their native tongue or colloquial slang.
 *   📸 **Multimodal Image Upload:** Uploading a photo of a civic issue (e.g., potholes, trash dumps, broken transformers) allows the AI to automatically identify the issue, classify the category, and draft the ticket without the user typing a single word.
@@ -60,7 +60,7 @@ NagrikTriage integrates the three pillars of municipal interaction into a single
 *   📍 **Location Context:** Automatically reads lat/lng coordinates (with permission) and passes them to the AI pipeline to determine local municipal jurisdictions.
 
 ### 2. Nodal Officer Experience (`/officer`)
-![Nodal Officer Experience](../officer.png)
+![Nodal Officer Experience](public/officer.png)
 
 *   ✅ **Auto-Filtered Inbox:** Officers see only the tickets routed to their specific department (e.g., Jal Board, PWD, BESCOM).
 *   📊 **Urgency-Based Sorting:** AI ranks tickets automatically based on severity (1-10) rather than submission order.
@@ -69,7 +69,7 @@ NagrikTriage integrates the three pillars of municipal interaction into a single
 *   🗣️ **Text-to-Speech:** Officers can listen to the formal complaint draft read aloud with one click.
 
 ### 3. City Administrator / Mayor Experience (`/mayor`)
-![Administrator Experience](../Administrator.png)
+![Administrator Experience](public/administrator.png)
 
 *   🗺️ **Live Incident Heatmap:** Interactive Leaflet + OpenStreetMap dashboard. Map markers scale in size and change color based on the volume and urgency of reports in that area.
 *   🚨 **Anomalous Spike Warnings:** AI scans complaints daily and flags spikes (e.g., *"40% spike in Sanitation complaints in Ward 4 today"*).
@@ -148,8 +148,8 @@ app/
 
 ### 1. Clone the repository and install dependencies:
 ```bash
-git clone https://github.com/yourusername/prompt-wars-nagriktriage.git
-cd prompt-wars-nagriktriage/nagriktriage
+git clone https://github.com/HussamHaroon/NagrikTriage-Civic-Router.git
+cd NagrikTriage-Civic-Router
 npm install
 ```
 
