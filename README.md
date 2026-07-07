@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="../logo.png" alt="NagrikTriage Logo" width="120" />
+</p>
+
 # 🇮🇳 NagrikTriage — Smart Bharat Civic Companion
 
 > **Tagline:** Turning messy, multilingual citizen frustration into structured, actionable government tickets — across **one platform, three users**.
@@ -11,8 +15,8 @@ NagrikTriage is a GenAI-powered, **two-sided civic triage and routing platform**
 ---
 
 ## 🔗 Demo & Repository Links
-*   **GitHub Repository:** [https://github.com/yourusername/prompt-wars-nagriktriage](https://github.com/yourusername/prompt-wars-nagriktriage) *(Replace with your actual public repository URL)*
-*   **Live Deployed Application:** [https://nagriktriage.vercel.app](https://nagriktriage.vercel.app) *(Replace with your actual Vercel/Cloud Run URL)*
+*   **GitHub Repository:** [https://github.com/trueg/NagrikTriage](https://github.com/trueg/NagrikTriage)
+*   **Live Deployed Application:** [https://nagrik-triage-civic-router.vercel.app/](https://nagrik-triage-civic-router.vercel.app/)
 
 > [!IMPORTANT]
 > **One-Click Hackathon Judge Credentials**
@@ -44,6 +48,8 @@ Below is a direct map of how this project delivers on the seven official evaluat
 NagrikTriage integrates the three pillars of municipal interaction into a single interface.
 
 ### 1. Citizen Experience (`/citizen`)
+![Citizen Experience](../Citizen.png)
+
 *   🗣️ **Multilingual Voice & Text Input:** Citizens can type or use browser-native speech-to-text (Web Speech API) in their native tongue or colloquial slang.
 *   📸 **Multimodal Image Upload:** Uploading a photo of a civic issue (e.g., potholes, trash dumps, broken transformers) allows the AI to automatically identify the issue, classify the category, and draft the ticket without the user typing a single word.
 *   🌐 **Localized Interface:** The entire client UI can be toggled instantly across 6 languages: English, हिन्दी (Hindi), தமிழ் (Tamil), বাংলা (Bengali), తెలుగు (Telugu), and मराठी (Marathi).
@@ -54,6 +60,8 @@ NagrikTriage integrates the three pillars of municipal interaction into a single
 *   📍 **Location Context:** Automatically reads lat/lng coordinates (with permission) and passes them to the AI pipeline to determine local municipal jurisdictions.
 
 ### 2. Nodal Officer Experience (`/officer`)
+![Nodal Officer Experience](../officer.png)
+
 *   ✅ **Auto-Filtered Inbox:** Officers see only the tickets routed to their specific department (e.g., Jal Board, PWD, BESCOM).
 *   📊 **Urgency-Based Sorting:** AI ranks tickets automatically based on severity (1-10) rather than submission order.
 *   🤖 **Confidence Metrics:** Displays Gemini's classification confidence score and a quick bulleted summary of extracted incident signals.
@@ -61,6 +69,8 @@ NagrikTriage integrates the three pillars of municipal interaction into a single
 *   🗣️ **Text-to-Speech:** Officers can listen to the formal complaint draft read aloud with one click.
 
 ### 3. City Administrator / Mayor Experience (`/mayor`)
+![Administrator Experience](../Administrator.png)
+
 *   🗺️ **Live Incident Heatmap:** Interactive Leaflet + OpenStreetMap dashboard. Map markers scale in size and change color based on the volume and urgency of reports in that area.
 *   🚨 **Anomalous Spike Warnings:** AI scans complaints daily and flags spikes (e.g., *"40% spike in Sanitation complaints in Ward 4 today"*).
 *   📊 **KPI Strip:** Real-time citywide tracking of Open vs. Resolved counts and critical unresolved tickets.

@@ -78,7 +78,6 @@ const ROLES = [
     id: "citizen",
     title: "Citizen",
     image: "/citizen.png",
-    scale: 2,
     blurb:
       "File a complaint in your native language — text, voice, or photo. Get a routed, formal ticket in 3 seconds.",
     accent: "bg-orange-50 border-orange-200 text-orange-900",
@@ -88,7 +87,6 @@ const ROLES = [
     id: "officer",
     title: "Nodal Officer",
     image: "/officer.png",
-    scale: 1,
     blurb:
       "See only the tickets routed to your department, AI-summarized and sorted by urgency. No sorting, no translation, no triage.",
     accent: "bg-blue-50 border-blue-200 text-blue-900",
@@ -98,7 +96,6 @@ const ROLES = [
     id: "mayor",
     title: "City Administrator",
     image: "/administrator.png",
-    scale: 2,
     blurb:
       "Watch the city in real time. Heatmap, category spikes, ward-by-ward trends, and AI-flagged emergencies.",
     accent: "bg-emerald-50 border-emerald-200 text-emerald-900",
@@ -179,40 +176,32 @@ export default function LandingPage() {
       </section>
 
       {/* 3 personas */}
-      <section className="max-w-6xl mx-auto px-5 sm:px-8 mt-20">
+      <section className="max-w-6xl mx-auto px-5 sm:px-8 mt-12">
         <div className="text-center text-xs font-semibold uppercase tracking-wider text-slate-500">
           Pick your role to continue
         </div>
-        <div className="mt-10 grid sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-12">
           {ROLES.map((r) => (
-            <div
+            <button
               key={r.id}
-              className="clay-card group"
-              style={{ ["--scale" as string]: r.scale }}
+              type="button"
+              onClick={() => pickRole(r.id as "citizen" | "officer" | "mayor", r.redirect)}
+              disabled={busyId !== null}
+              className={`group flex flex-col items-center text-center p-6 bg-white/50 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition disabled:opacity-60 ${r.accent}`}
             >
-              {/* Clay figure — sits behind the card so only the upper half shows above the box */}
+              {/* 3D character — sits inside the card, popping out the top */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={r.image}
-                alt=""
-                aria-hidden
-                className="clay-figure"
+                alt={`${r.title} avatar`}
+                className="h-40 w-40 object-contain -mt-16 mb-4 drop-shadow-xl pointer-events-none select-none"
               />
-              {/* The box */}
-              <button
-                type="button"
-                onClick={() => pickRole(r.id as "citizen" | "officer" | "mayor", r.redirect)}
-                disabled={busyId !== null}
-                className={`clay-card-btn ${r.accent}`}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <div className="text-lg font-bold">{r.title}</div>
-                  <span className="inline-flex items-center text-sm font-medium group-hover:translate-x-1 transition-transform">
-                    {busyId === r.id ? "Opening…" : "Continue →"}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm leading-relaxed opacity-90 text-left">{r.blurb}</p>
-              </button>
-            </div>
+              <div className="text-lg font-bold">{r.title}</div>
+              <p className="mt-2 text-sm leading-relaxed opacity-90">{r.blurb}</p>
+              <div className="mt-4 inline-flex items-center text-sm font-medium group-hover:translate-x-1 transition-transform">
+                {busyId === r.id ? "Opening…" : "Continue →"}
+              </div>
+            </button>
           ))}
         </div>
       </section>
