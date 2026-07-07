@@ -9,12 +9,11 @@ out/
 build/
 dist/
 
-# Environment files - NEVER commit
-.env
-.env.local
-.env.development.local
-.env.production.local
-.env.test.local
+# Environment files - NEVER commit ANY of them.
+# Ignore every .env* variant except the documented example template.
+.env*
+!.env.local.example
+!.env.example
 
 # Logs
 npm-debug.log*
