@@ -10,9 +10,10 @@ const COOKIE = "nagrik_role";
 
 const VALID: Role[] = ["citizen", "officer", "mayor"];
 
-export function readRoleCookie(): Role {
+export async function readRoleCookie(): Promise<Role> {
   try {
-    const c = cookies().get(COOKIE)?.value;
+    const store = await cookies();
+    const c = store.get(COOKIE)?.value;
     if (c && (VALID as string[]).includes(c)) return c as Role;
   } catch {
     // outside request scope (e.g. RSC static prerender) → default
@@ -20,9 +21,10 @@ export function readRoleCookie(): Role {
   return "citizen";
 }
 
-export function writeRoleCookie(role: Role) {
+export async function writeRoleCookie(role: Role) {
   try {
-    cookies().set(COOKIE, role, {
+    const store = await cookies();
+    store.set(COOKIE, role, {
       path: "/",
       httpOnly: false, // demo, so client-side role chip can read it too
       sameSite: "lax",
